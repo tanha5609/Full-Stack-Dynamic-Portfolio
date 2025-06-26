@@ -6,27 +6,26 @@ body {
   color: #222;
 }
 
-.navbar {
+.menu {
   position: absolute;
   top: 20px;
   right: 30px;
 }
 
-.navbar ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.navbar li {
-  display: inline;
-  margin-left: 15px;
-}
-
-.navbar a {
+.menu a {
   color: #333;
   text-decoration: none;
   font-weight: bold;
+  margin-left: 15px;
+  font-size: 16px;
+}
+
+.menu a:hover {
+  text-decoration: underline;
+}
+
+.content {
+  margin-top: 70px;
 }
 
 .profile-pic {
@@ -35,7 +34,7 @@ body {
   height: 100px;
   object-fit: cover;
   border-radius: 50%;
-  margin: 70px auto 20px auto;
+  margin: 0 auto 20px auto;
 }
 
 h1, h3, p {
