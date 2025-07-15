@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Tanha | Software Developer</title>
-  <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+  <link rel="stylesheet" href="{{ asset('assest/css/style.css') }}">
 </head>
 <body>
   <header class="header">
@@ -12,15 +12,15 @@
         <div class="role">Software Developer</div>
     </div>
     <nav class="navbar">
-        <a href="{{ url('about') }}">About me</a>
-        <a href="{{ url('education') }}">Education</a>
-        <a href="{{ url('skills') }}">Skills</a>
-        <a href="{{ url('projects') }}">Projects</a>
-        <a href="{{ url('experience') }}">Experience</a>
+        <a href="{{ route('about') }}">About me</a>
+        <a href="{{ route('education') }}">Education</a>
+        <a href="{{ route('skills') }}">Skills</a>
+        <a href="{{ route('projects') }}">Projects</a>
+        <a href="{{ route('experience') }}">Experience</a>
     </nav>
-
+<!-- ========= ABOUT-ME PAGE STYLES ========= -->
 <style>
-
+/* wrapper */
 .about-wrapper{
   padding:60px 5%;
   max-width:1100px;
@@ -29,7 +29,7 @@
   color:#333;
 }
 
-
+/* hero */
 .about-hero{
   display:flex;
   flex-wrap:wrap;
@@ -47,12 +47,12 @@
 .tagline{font-size:1rem;font-weight:600;color:#555;margin-bottom:14px}
 .about-content p{line-height:1.55;margin-bottom:22px}
 
-
+/* stats */
 .about-stats{display:flex;gap:32px;margin:24px 0}
 .stat h3{margin:0;font-size:1.8rem;color:#0077b6}
 .stat span{font-size:.85rem;color:#666}
 
-
+/* contact card */
 .contact-card{
   border:1px solid #d0e8ff;
   background:#f0f8ff;
@@ -102,7 +102,7 @@
   <section class="about-hero">
     <div class="about-photo">
       <!-- swap with a real photo -->
-      <img src="https://media.istockphoto.com/id/1293763250/photo/cute-kitten-licking-glass-table-with-copy-space.jpg?s=612x612&w=0&k=20&c=JbHxMGlHpB3BwgQChCDLt-Iwbl2MYX-SS_f8oQa8RO0=" alt="Tanha – profile photo">
+      <img src="https://via.placeholder.com/320x360?text=Tanha" alt="Tanha – profile photo">
     </div>
 
     <div class="about-content">

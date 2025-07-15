@@ -18,7 +18,7 @@ Route::get('/skills', function () {
     return view('skills');
 })->name('skills');
 
-Route::get('/projects', function () {
+Route::get('/project', function () {
     return view('projects');
 })->name('projects');
 

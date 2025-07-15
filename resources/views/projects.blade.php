@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Tanha | Software Developer</title>
-  <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+  <link rel="stylesheet" href="{{ asset('assest/css/style.css') }}">
 </head>
 <body>
   <header class="header">
@@ -12,16 +12,15 @@
         <div class="role">Software Developer</div>
     </div>
     <nav class="navbar">
-        <a href="{{ url('about') }}">About me</a>
-        <a href="{{ url('education') }}">Education</a>
-        <a href="{{ url('skills') }}">Skills</a>
-        <a href="{{ url('project ') }}">project </a>
-        <a href="{{ url('experience') }}">Experience</a>
+        <a href="{{ route('about') }}">About me</a>
+        <a href="{{ route('education') }}">Education</a>
+        <a href="{{ route('skills') }}">Skills</a>
+        <a href="{{ route('projects') }}">Projects</a>
+        <a href="{{ route('experience') }}">Experience</a>
     </nav>
-    </header>
 
 <style>
-  .project -section{
+  .projects-section{
     padding:50px 5%;
     background:#f9fafa;
   }
@@ -31,7 +30,7 @@
     margin-bottom:40px;
     color:#0077b6;
   }
-  
+  /* grid now fits more cards by shrinking the min width */
   .project-grid{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
@@ -51,7 +50,7 @@
 
   .project-img{
     width:100%;
-    height:160px;                 
+    height:160px;                 /* was 200px */
     object-fit:cover;
   }
   .project-content{
@@ -61,7 +60,7 @@
     flex-direction:column;
   }
   .project-title{
-    font-size:1.25rem;            
+    font-size:1.25rem;            /* slightly smaller */
     margin:0 0 8px;
     color:#222;
   }
@@ -99,12 +98,12 @@
 </style>
 </header>
 
-<main class="project -section">
-  <h1 class="section-title">My project </h1>
+<main class="projects-section">
+  <h1 class="section-title">My Projects</h1>
 
   <div class="project-grid">
 
-    
+    <!-- ---------------- existing cards ---------------- -->
     <div class="project-card">
       <img src="https://i.ytimg.com/vi/TwYKwaEjJd4/maxresdefault.jpg" alt="Portfolio Website" class="project-img">
       <div class="project-content">
@@ -116,7 +115,7 @@
     </div>
 
 
-    
+    <!-- ---------------- new cards ---------------- -->
     <div class="project-card">
       <img src="https://www.crawfordsq.com/wp-content/uploads/2020/05/On-The-Go-730x730.png" alt="On the GO" class="project-img">
       <div class="project-content">
