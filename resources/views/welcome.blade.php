@@ -1,53 +1,401 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Tanha | Software Developer</title>
-  <link rel="stylesheet" href="{{ asset('assest/css/style.css') }}">
-</head>
-<body>
-  <header class="header">
-    <div class="header-left" style="display: flex; flex-direction: column; align-items: flex-start;">
-        <a href="{{ url('/') }}" class="name" style="text-decoration: none; color: inherit;">Tanha</a>
-        <div class="role">Software Developer</div>
-    </div>
-    <nav class="navbar">
-        <a href="{{ url('about') }}">About me</a>
-        <a href="{{ url('education') }}">Education</a>
-        <a href="{{ url('skills') }}">Skills</a>
-        <a href="{{ url('projects') }}">Projects</a>
-        <a href="{{ url('experience') }}">Experience</a>
-    </nav>
-  </header>
-  <main class="main-content">
-    <div class="main-left">
-      <h2>Hi, I am Foujia Afrose Tanha</h2>
-      <h1>Software Developer</h1>
-      <p>
-        Passionate about building impactful software solutions.  
-        Always eager to learn and grow in the tech world.
+@extends('layouts.app')
+
+@section('content')
+@push('styles')
+<style>
+  /* ========= WELCOME PAGE STYLES ========= */
+  .welcome-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px 20px;
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+  }
+
+  .welcome-hero {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 80px;
+    align-items: center;
+    width: 100%;
+  }
+
+  .welcome-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  .welcome-greeting {
+    font-size: 1.4rem;
+    color: #666;
+    font-weight: 500;
+    margin-bottom: 10px;
+    opacity: 0;
+    animation: slideInLeft 0.8s ease forwards;
+  }
+
+  .welcome-name {
+    font-size: 4rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+    background: linear-gradient(135deg, #0077b6, #00b4d8, #0096c7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    opacity: 0;
+    animation: slideInLeft 0.8s ease 0.2s forwards;
+  }
+
+  .welcome-title {
+    font-size: 2.2rem;
+    color: #0077b6;
+    font-weight: 600;
+    margin-bottom: 25px;
+    opacity: 0;
+    animation: slideInLeft 0.8s ease 0.4s forwards;
+  }
+
+  .welcome-description {
+    font-size: 1.2rem;
+    line-height: 1.7;
+    color: #555;
+    margin-bottom: 40px;
+    opacity: 0;
+    animation: slideInLeft 0.8s ease 0.6s forwards;
+  }
+
+  .highlight-text {
+    color: #0077b6;
+    font-weight: 600;
+  }
+
+  .social-links {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 40px;
+    opacity: 0;
+    animation: slideInLeft 0.8s ease 0.8s forwards;
+  }
+
+  .social-link {
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: #0077b6;
+    font-size: 1.3rem;
+    box-shadow: 0 8px 25px rgba(0, 119, 182, 0.2);
+    border: 1px solid rgba(0, 119, 182, 0.1);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .social-link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #0077b6, #00b4d8);
+    transition: left 0.3s ease;
+    z-index: -1;
+  }
+
+  .social-link:hover::before {
+    left: 0;
+  }
+
+  .social-link:hover {
+    color: white;
+    transform: translateY(-5px) scale(1.1);
+    box-shadow: 0 15px 35px rgba(0, 119, 182, 0.4);
+  }
+
+  .welcome-cta {
+    display: flex;
+    gap: 20px;
+    opacity: 0;
+    animation: slideInLeft 0.8s ease 1s forwards;
+  }
+
+  .cta-button {
+    padding: 15px 30px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .cta-primary {
+    background: linear-gradient(135deg, #0077b6, #00b4d8);
+    color: white;
+    box-shadow: 0 8px 25px rgba(0, 119, 182, 0.3);
+  }
+
+  .cta-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 35px rgba(0, 119, 182, 0.4);
+    color: white;
+    text-decoration: none;
+  }
+
+  .cta-secondary {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    color: #0077b6;
+    border: 2px solid rgba(0, 119, 182, 0.2);
+  }
+
+  .cta-secondary:hover {
+    background: rgba(0, 119, 182, 0.1);
+    border-color: #0077b6;
+    transform: translateY(-3px);
+    color: #0077b6;
+    text-decoration: none;
+  }
+
+  .welcome-image {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .image-container {
+    position: relative;
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 119, 182, 0.3);
+    opacity: 0;
+    animation: scaleIn 1s ease 0.5s forwards;
+  }
+
+  .image-container::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, #0077b6, #00b4d8, #0096c7, #0077b6);
+    border-radius: 50%;
+    z-index: -1;
+    animation: rotate 4s linear infinite;
+  }
+
+  .welcome-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+
+  .image-container:hover img {
+    transform: scale(1.05);
+  }
+
+  /* ========= FLOATING WELCOME ICONS ========= */
+  .floating-welcome {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .floating-welcome-icon {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background: rgba(0, 119, 182, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: floatWelcome 20s ease-in-out infinite;
+  }
+
+  .floating-welcome-icon:nth-child(1) {
+    top: 10%;
+    left: 10%;
+    animation-delay: 0s;
+  }
+
+  .floating-welcome-icon:nth-child(2) {
+    top: 60%;
+    right: 5%;
+    animation-delay: 7s;
+  }
+
+  .floating-welcome-icon:nth-child(3) {
+    bottom: 15%;
+    left: 15%;
+    animation-delay: 14s;
+  }
+
+  .floating-welcome-icon:nth-child(4) {
+    top: 30%;
+    right: 20%;
+    animation-delay: 3s;
+  }
+
+  @keyframes floatWelcome {
+    0%, 100% {
+      transform: translateY(0) rotate(0deg);
+      opacity: 0.3;
+    }
+    25% {
+      transform: translateY(-40px) rotate(90deg);
+      opacity: 0.7;
+    }
+    50% {
+      transform: translateY(-60px) rotate(180deg);
+      opacity: 0.3;
+    }
+    75% {
+      transform: translateY(-40px) rotate(270deg);
+      opacity: 0.7;
+    }
+  }
+
+  @keyframes slideInLeft {
+    from {
+      opacity: 0;
+      transform: translateX(-50px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes scaleIn {
+    from {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes rotate {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* ========= RESPONSIVE DESIGN ========= */
+  @media (max-width: 768px) {
+    .welcome-hero {
+      grid-template-columns: 1fr;
+      gap: 40px;
+      text-align: center;
+    }
+
+    .welcome-name {
+      font-size: 3rem;
+    }
+
+    .welcome-title {
+      font-size: 1.8rem;
+    }
+
+    .image-container {
+      width: 300px;
+      height: 300px;
+    }
+
+    .welcome-cta {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .cta-button {
+      width: 100%;
+      max-width: 250px;
+      justify-content: center;
+    }
+
+    .social-links {
+      justify-content: center;
+    }
+  }
+</style>
+@endpush
+
+<div class="welcome-wrapper">
+  <!-- Floating Welcome Icons -->
+  <div class="floating-welcome">
+    <div class="floating-welcome-icon"><i class="fas fa-code"></i></div>
+    <div class="floating-welcome-icon"><i class="fas fa-laptop"></i></div>
+    <div class="floating-welcome-icon"><i class="fas fa-rocket"></i></div>
+    <div class="floating-welcome-icon"><i class="fas fa-lightbulb"></i></div>
+  </div>
+
+  <div class="welcome-hero">
+    <div class="welcome-content">
+      <p class="welcome-greeting">Hi, I am</p>
+      <h1 class="welcome-name">Foujia Afrose Tanha</h1>
+      <h2 class="welcome-title">Software Developer</h2>
+      <p class="welcome-description">
+        Passionate about building <span class="highlight-text">impactful software solutions</span>. 
+        Always eager to learn and grow in the tech world, creating innovative 
+        applications that make a difference.
       </p>
-      <div class="social-icons">
-        <a href="https://facebook.com/" target="_blank" class="icon" aria-label="Facebook">
-          <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M22.675 0h-21.35C.595 0 0 .592 0 1.326v21.348C0 23.408.595 24 1.325 24h11.495v-9.294H9.692V11.01h3.128V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.797.143v3.24l-1.918.001c-1.504 0-1.797.715-1.797 1.763v2.312h3.587l-.467 3.696h-3.12V24h6.116C23.406 24 24 23.408 24 22.674V1.326C24 .592 23.406 0 22.675 0"/>
-          </svg>
+      
+      <div class="social-links">
+        <a href="https://facebook.com/" target="_blank" class="social-link" aria-label="Facebook">
+          <i class="fab fa-facebook-f"></i>
         </a>
-        <a href="https://linkedin.com/" target="_blank" class="icon" aria-label="LinkedIn">
-          <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M20.447 20.452h-3.554v-5.569c0-1.327-.027-3.037-1.849-3.037-1.851 0-2.132 1.445-2.132 2.939v5.667H9.358V9h3.414v1.561h.049c.476-.899 1.637-1.849 3.37-1.849 3.602 0 4.267 2.368 4.267 5.455v6.285zM5.337 7.433c-1.144 0-2.069-.926-2.069-2.068 0-1.143.925-2.069 2.069-2.069 1.143 0 2.068.926 2.068 2.069 0 1.142-.925 2.068-2.068 2.068zm1.777 13.019H3.56V9h3.554v11.452zM22.225 0H1.771C.792 0 0 .771 0 1.723v20.549C0 23.229.792 24 1.771 24h20.451C23.2 24 24 23.229 24 22.271V1.723C24 .771 23.2 0 22.225 0z"/>
-          </svg>
+        <a href="https://linkedin.com/" target="_blank" class="social-link" aria-label="LinkedIn">
+          <i class="fab fa-linkedin-in"></i>
         </a>
-        <a href="https://github.com/" target="_blank" class="icon" aria-label="GitHub">
-          <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.416-4.042-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.084-.729.084-.729 1.205.084 1.84 1.236 1.84 1.236 1.07 1.834 2.809 1.304 3.495.997.108-.775.418-1.305.762-1.605-2.665-.305-5.466-1.334-5.466-5.931 0-1.31.469-2.381 1.236-3.221-.124-.303-.535-1.523.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.553 3.297-1.23 3.297-1.23.653 1.653.242 2.873.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.803 5.624-5.475 5.921.43.371.823 1.102.823 2.222 0 1.606-.014 2.898-.014 3.293 0 .322.216.694.825.576C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
-          </svg>
+        <a href="https://github.com/" target="_blank" class="social-link" aria-label="GitHub">
+          <i class="fab fa-github"></i>
+        </a>
+        <a href="https://twitter.com/" target="_blank" class="social-link" aria-label="Twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </div>
+
+      <div class="welcome-cta">
+        <a href="{{ url('projects') }}" class="cta-button cta-primary hover-lift">
+          <i class="fas fa-briefcase"></i>
+          View My Work
+        </a>
+        <a href="{{ url('about') }}" class="cta-button cta-secondary hover-lift">
+          <i class="fas fa-user"></i>
+          About Me
         </a>
       </div>
     </div>
-    <div class="main-right">
-      <img src="https://cdni.iconscout.com/illustration/premium/thumb/female-user-image-illustration-download-in-svg-png-gif-file-formats--person-girl-business-pack-illustrations-6515859.png" alt="Tanha's Photo" class="profile-img">
+
+    <div class="welcome-image">
+      <div class="image-container">
+        <img src="{{ asset('assest/images/Tanha.jpg') }}" alt="Foujia Afrose Tanha" loading="lazy">
+      </div>
     </div>
-  </main>
-</body>
-</html>
+  </div>
+</div>
+@endsection

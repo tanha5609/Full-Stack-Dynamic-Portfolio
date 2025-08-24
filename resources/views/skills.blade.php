@@ -1,248 +1,427 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Tanha | Software Developer</title>
-  <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
-  <style>
-    <style>
-    <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f5f8fa;
-      color: #333;
+@extends('layouts.app')
+
+@section('content')
+@push('styles')
+<style>
+  /* ========= SKILLS PAGE STYLES ========= */
+  .skills-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px 20px;
+  }
+
+  .skills-title {
+    text-align: center;
+    font-size: 3rem;
+    font-weight: 700;
+    color: #0077b6;
+    margin-bottom: 20px;
+    position: relative;
+    display: inline-block;
+  }
+
+  .skills-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(90deg, #0077b6, #00b4d8);
+    border-radius: 2px;
+  }
+
+  .skills-subtitle {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #666;
+    margin-bottom: 60px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+  }
+
+  .skill-card {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 8px 32px rgba(0, 119, 182, 0.1);
+    border: 1px solid rgba(0, 119, 182, 0.1);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  .skill-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 119, 182, 0.05), transparent);
+    transition: left 0.6s ease;
+  }
+
+  .skill-card:hover::before {
+    left: 100%;
+  }
+
+  .skill-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 119, 182, 0.2);
+    border-color: rgba(0, 119, 182, 0.3);
+  }
+
+  .skill-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .skill-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    background: linear-gradient(135deg, #0077b6, #00b4d8);
+    box-shadow: 0 4px 15px rgba(0, 119, 182, 0.3);
+    transition: all 0.3s ease;
+  }
+
+  .skill-card:hover .skill-icon {
+    transform: rotate(360deg) scale(1.1);
+  }
+
+  .skill-icon img {
+    width: 35px;
+    height: 35px;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+  }
+
+  .skill-name {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #0077b6;
+    margin: 0;
+  }
+
+  .skill-description {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .skill-level {
+    position: relative;
+    z-index: 2;
+  }
+
+  .skill-level-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #333;
+  }
+
+  .skill-progress {
+    width: 100%;
+    height: 8px;
+    background: rgba(0, 119, 182, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .skill-progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #0077b6, #00b4d8);
+    border-radius: 10px;
+    transition: width 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .skill-progress-bar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    animation: shimmer 2s infinite;
+  }
+
+  @keyframes shimmer {
+    0% {
+      left: -100%;
+    }
+    100% {
+      left: 100%;
+    }
+  }
+
+  .expand-btn {
+    background: none;
+    border: none;
+    color: #0077b6;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 8px 0;
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 2;
+  }
+
+  .expand-btn:hover {
+    color: #005f94;
+    transform: translateX(5px);
+  }
+
+  .expand-btn i {
+    transition: transform 0.3s ease;
+  }
+
+  .skill-card.expanded .expand-btn i {
+    transform: rotate(180deg);
+  }
+
+  .skill-details {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+    position: relative;
+    z-index: 2;
+  }
+
+  .skill-card.expanded .skill-details {
+    max-height: 200px;
+    margin-top: 15px;
+  }
+
+  .experience-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #0077b6, #00b4d8);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-top: 10px;
+  }
+
+  /* ========= FLOATING SKILL ICONS ========= */
+  .floating-skills {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .floating-skill-icon {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background: rgba(0, 119, 182, 0.1);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: floatSkill 8s ease-in-out infinite;
+  }
+
+  .floating-skill-icon:nth-child(1) {
+    top: 20%;
+    left: 5%;
+    animation-delay: 0s;
+  }
+
+  .floating-skill-icon:nth-child(2) {
+    top: 40%;
+    right: 8%;
+    animation-delay: 2s;
+  }
+
+  .floating-skill-icon:nth-child(3) {
+    bottom: 30%;
+    left: 10%;
+    animation-delay: 4s;
+  }
+
+  .floating-skill-icon:nth-child(4) {
+    top: 60%;
+    right: 15%;
+    animation-delay: 6s;
+  }
+
+  @keyframes floatSkill {
+    0%, 100% {
+      transform: translateY(0) rotate(0deg);
+      opacity: 0.3;
+    }
+    25% {
+      transform: translateY(-15px) rotate(90deg);
+      opacity: 0.6;
+    }
+    50% {
+      transform: translateY(-25px) rotate(180deg);
+      opacity: 0.3;
+    }
+    75% {
+      transform: translateY(-15px) rotate(270deg);
+      opacity: 0.6;
+    }
+  }
+
+  /* ========= RESPONSIVE DESIGN ========= */
+  @media (max-width: 768px) {
+    .skills-title {
+      font-size: 2.5rem;
     }
 
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      padding: 24px 48px 16px;
-      border-bottom: 1px solid #eee;
-      background: #fff;
-    }
-
-    .header-left {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .name {
-      font-size: 1.7rem;
-      font-weight: bold;
-      text-decoration: none;
-      color: #222;
-    }
-
-    .role {
-      font-size: 1rem;
-      color: #888;
-    }
-
-    .navbar {
-      display: flex;
-      gap: 24px;
-      flex-wrap: wrap;
-      margin-top: 4px;
-    }
-
-    .navbar a {
-      text-decoration: none;
-      color: #333;
-      font-weight: 500;
-    }
-
-    .navbar a:hover {
-      color: #0077b6;
-    }
-
-    .content {
-      padding: 40px 5%;
-    }
-
-    .content h1 {
-      text-align: center;
-      margin-bottom: 40px;
-      color: #0077b6;
-    }
-
-    .skills-cards {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 32px;
-      justify-content: center;
-      align-items: flex-start;
+    .skills-grid {
+      grid-template-columns: 1fr;
+      gap: 20px;
     }
 
     .skill-card {
-      width: 300px;
-      background: #fff;
-      border: 1px solid #e0e0e0;
-      border-radius: 14px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-      overflow: hidden;
-      transition: 0.2s;
+      padding: 25px;
     }
 
-    .card-header {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      padding: 20px;
-      cursor: pointer;
-    }
-
-    .skill-img {
+    .skill-icon {
       width: 50px;
       height: 50px;
-      background: #eee;
-      border-radius: 8px;
-      object-fit: contain;
     }
 
-    .skill-title {
-      flex-grow: 1;
-      font-size: 1.2rem;
-      font-weight: bold;
-      color: #222;
+    .skill-icon img {
+      width: 30px;
+      height: 30px;
     }
+  }
+</style>
+@endpush
 
-    .chevron {
-      font-size: 1.1rem;
-      transition: transform 0.3s;
-    }
+<div class="skills-wrapper">
+  <!-- Floating Skill Icons -->
+  <div class="floating-skills">
+    <div class="floating-skill-icon"><i class="fab fa-html5"></i></div>
+    <div class="floating-skill-icon"><i class="fab fa-css3-alt"></i></div>
+    <div class="floating-skill-icon"><i class="fab fa-js"></i></div>
+    <div class="floating-skill-icon"><i class="fab fa-php"></i></div>
+  </div>
 
-    .skill-desc {
-      max-height: 0;
-      overflow: hidden;
-      padding: 0 20px;
-      background: #f8f9fa;
-      font-size: 0.95rem;
-      color: #444;
-      transition: max-height 0.3s ease, padding 0.3s ease;
-    }
+  <div class="fade-in-up">
+    <h1 class="skills-title">My Skills</h1>
+    <p class="skills-subtitle">Explore my technical expertise and professional capabilities that drive innovative solutions</p>
+  </div>
 
-    .skill-card.open .skill-desc {
-      padding: 16px 20px;
-      max-height: 200px;
-    }
-
-    .skill-card.open .chevron {
-      transform: rotate(180deg);
-    }
-  </style>
-</head>
-<body>
-
-  <!-- ===== HEADER ===== -->
-  <header class="header">
-    <div class="header-left">
-      <a href="{{ url('/') }}" class="name">Tanha</a>
-      <div class="role">Software Developer</div>
-    </div>
-    <nav class="navbar">
-      <a href="{{ route('about') }}">About me</a>
-      <a href="{{ route('education') }}">Education</a>
-      <a href="{{ route('skills') }}">Skills</a>
-      <a href="{{ route('projects') }}">Projects</a>
-      <a href="{{ route('experience') }}">Experience</a>
-    </nav>
-  </header>
-
-    <main class="content">
-    <h1>My Skills</h1>
-    <div class="skills-cards" id="skills-container"></div>
-  </main>
-
-  <script>
-    const skills = [
-      {
-        name: "HTML",
-        img: "https://upload.wikimedia.org/wikipedia/commons/6/61/HTML5_logo_and_wordmark.svg",
-        desc: "I have solid experience with HTML5, building semantic and accessible structures. I've been using it confidently for over 6 months."
-      },
-      {
-        name: "CSS",
-        img: "https://upload.wikimedia.org/wikipedia/commons/d/d5/CSS3_logo_and_wordmark.svg",
-        desc: "From layouts to animations, I’ve worked with modern CSS including Flexbox and Grid. I can build beautiful responsive UIs."
-      },
-      {
-        name: "JavaScript",
-        img: "https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png",
-        desc: "I’ve built interactive components using JavaScript. With 6+ months of practice, I’m confident in writing clean, dynamic code."
-      },
-      {
-        name: "C",
-        img: "https://upload.wikimedia.org/wikipedia/commons/3/35/The_C_Programming_Language_logo.svg",
-        desc: "I started programming with C. I’ve solved hundreds of problems and understand core programming logic well."
-      },
-      {
-        name: "C++",
-        img: "https://upload.wikimedia.org/wikipedia/commons/1/18/ISO_C%2B%2B_Logo.svg",
-        desc: "C++ has been my go-to for problem solving and algorithmic challenges. I have 1+ year of experience with it."
-      },
-      {
-        name: "Python",
-        img: "https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg",
-        desc: "Python is my favorite for scripting and machine learning. I’ve used it for data analysis, automation, and more."
-      },
-      {
-        name: "Flutter",
-        img: "https://upload.wikimedia.org/wikipedia/commons/1/17/Google-flutter-logo.png",
-        desc: "I've built cross-platform mobile apps using Flutter. Its widget-based structure makes building UIs fun and fast."
-      },
-      {
-        name: "MySQL",
-        img: "https://upload.wikimedia.org/wikipedia/en/d/dd/MySQL_logo.svg",
-        desc: "I’ve worked with MySQL databases for storing and retrieving app data. Comfortable writing complex queries and joins."
-      },
-      {
-        name: "Java",
-        img: "https://upload.wikimedia.org/wikipedia/en/3/30/Java_programming_language_logo.svg",
-        desc: "I have a good foundation in OOP through Java. Built console-based apps and understand the Java ecosystem well."
-      },
-      {
-        name: "Figma",
-        img: "https://upload.wikimedia.org/wikipedia/commons/3/33/Figma-logo.svg",
-        desc: "I’ve used Figma for designing modern web and app UIs. Comfortable with prototyping and component-based design."
-      }
-    ];
-
-    const container = document.getElementById("skills-container");
-
-    skills.forEach(skill => {
-      const card = document.createElement("div");
-      card.className = "skill-card";
-      card.innerHTML = `
-        <div class="card-header">
-          <img src="${skill.img}" alt="${skill.name}" class="skill-img">
-          <span class="skill-title">${skill.name}</span>
-          <span class="chevron">&#9662;</span>
+  <div class="skills-grid">
+    @forelse($skills as $index => $skill)
+    <div class="skill-card fade-in-up stagger-{{ ($index % 6) + 1 }} hover-lift" onclick="toggleSkill(this)">
+      <div class="skill-header">
+        <div class="skill-icon">
+          @if($skill->image_url)
+            <img src="{{ $skill->image_url }}" alt="{{ $skill->name }}">
+          @else
+            <i class="fas fa-code"></i>
+          @endif
         </div>
-        <div class="skill-desc">${skill.desc}</div>
-      `;
-      container.appendChild(card);
-    });
+        <h3 class="skill-name">{{ $skill->name }}</h3>
+      </div>
+      
+      <p class="skill-description">{{ $skill->description }}</p>
+      
+      @if($skill->proficiency_level)
+      <div class="skill-level">
+        <div class="skill-level-label">
+          <span>Proficiency</span>
+          <span>{{ $skill->proficiency_level }}%</span>
+        </div>
+        <div class="skill-progress">
+          <div class="skill-progress-bar" data-width="{{ $skill->proficiency_level }}%"></div>
+        </div>
+      </div>
+      @endif
 
-    document.addEventListener("DOMContentLoaded", () => {
-      const cards = document.querySelectorAll(".skill-card");
+      <button class="expand-btn">
+        <span>Learn More</span>
+        <i class="fas fa-chevron-down"></i>
+      </button>
 
-      cards.forEach(card => {
-        const header = card.querySelector(".card-header");
-        header.addEventListener("click", () => {
-          const isOpen = card.classList.contains("open");
+      <div class="skill-details">
+        <div class="experience-badge">{{ $skill->experience_years ?? '6' }}+ months experience</div>
+        <p style="margin-top: 10px; color: #666; font-size: 0.9rem;">
+          Continuously improving and applying this skill in real-world projects to deliver high-quality solutions.
+        </p>
+      </div>
+    </div>
+    @empty
+    <div class="skill-card fade-in-up">
+      <div class="skill-header">
+        <div class="skill-icon">
+          <i class="fas fa-code"></i>
+        </div>
+        <h3 class="skill-name">No Skills Available</h3>
+      </div>
+      <p class="skill-description">Skills will be displayed here once added through the admin panel.</p>
+    </div>
+    @endforelse
+  </div>
+</div>
 
-          // Close all cards
-          document.querySelectorAll(".skill-card.open").forEach(c => {
-            if (c !== card) c.classList.remove("open");
-          });
+@push('scripts')
+<script>
+function toggleSkill(card) {
+  card.classList.toggle('expanded');
+}
 
-          // Toggle clicked card
-          card.classList.toggle("open", !isOpen);
-        });
-      });
-    });
-  </script>
-</body>
-</html>
+// Animate progress bars when they come into view
+const observeProgressBars = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const progressBar = entry.target;
+      const width = progressBar.getAttribute('data-width');
+      setTimeout(() => {
+        progressBar.style.width = width;
+      }, 300);
+    }
+  });
+}, { threshold: 0.5 });
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.skill-progress-bar').forEach(bar => {
+    bar.style.width = '0%';
+    observeProgressBars.observe(bar);
+  });
+});
+</script>
+@endpush
+@endsection
