@@ -1,1 +1,413 @@
-@extends('layouts.app')@section('content')@push('styles')<style>  /* ========= EXPERIENCE PAGE STYLES ========= */  .experience-wrapper {    max-width: 1200px;    margin: 0 auto;    padding: 60px 20px;  }  .experience-title {    text-align: center;    font-size: 3rem;    font-weight: 700;    color: #0077b6;    margin-bottom: 20px;    position: relative;    display: inline-block;  }  .experience-title::after {    content: '';    position: absolute;    bottom: -10px;    left: 50%;    transform: translateX(-50%);    width: 120px;    height: 4px;    background: linear-gradient(90deg, #0077b6, #00b4d8);    border-radius: 2px;  }  .experience-subtitle {    text-align: center;    font-size: 1.2rem;    color: #666;    margin-bottom: 60px;    max-width: 600px;    margin-left: auto;    margin-right: auto;  }  .experience-grid {    display: grid;    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));    gap: 30px;    margin-top: 40px;  }  .experience-card {    background: rgba(255, 255, 255, 0.95);    backdrop-filter: blur(10px);    border-radius: 20px;    padding: 30px;    box-shadow: 0 8px 32px rgba(0, 119, 182, 0.1);    border: 1px solid rgba(0, 119, 182, 0.1);    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);    position: relative;    overflow: hidden;  }  .experience-card::before {    content: '';    position: absolute;    top: 0;    left: -100%;    width: 100%;    height: 100%;    background: linear-gradient(90deg, transparent, rgba(0, 119, 182, 0.05), transparent);    transition: left 0.6s ease;  }  .experience-card:hover::before {    left: 100%;  }  .experience-card:hover {    transform: translateY(-10px) scale(1.02);    box-shadow: 0 20px 40px rgba(0, 119, 182, 0.2);    border-color: rgba(0, 119, 182, 0.3);  }  .experience-header {    display: flex;    align-items: flex-start;    justify-content: space-between;    margin-bottom: 20px;    position: relative;    z-index: 2;  }  .experience-info {    flex-grow: 1;  }  .experience-position {    font-size: 1.4rem;    font-weight: 700;    color: #0077b6;    margin-bottom: 5px;    line-height: 1.3;  }  .experience-company {    font-size: 1.1rem;    font-weight: 600;    color: #333;    margin-bottom: 8px;  }  .experience-location {    color: #666;    font-size: 0.95rem;    margin-bottom: 10px;  }  .experience-duration {    display: inline-block;    background: linear-gradient(135deg, #0077b6, #00b4d8);    color: white;    padding: 6px 15px;    border-radius: 20px;    font-size: 0.9rem;    font-weight: 600;    flex-shrink: 0;  }  .experience-description {    color: #555;    line-height: 1.6;    margin-bottom: 20px;    position: relative;    z-index: 2;  }  .experience-technologies {    margin-top: 20px;    position: relative;    z-index: 2;  }  .technologies-title {    font-size: 1rem;    font-weight: 600;    color: #0077b6;    margin-bottom: 10px;    display: flex;    align-items: center;    gap: 8px;  }  .technology-tags {    display: flex;    flex-wrap: wrap;    gap: 8px;  }  .technology-tag {    background: rgba(0, 180, 216, 0.1);    color: #0077b6;    padding: 4px 12px;    border-radius: 15px;    font-size: 0.85rem;    font-weight: 500;    border: 1px solid rgba(0, 180, 216, 0.2);    transition: all 0.3s ease;  }  .technology-tag:hover {    background: rgba(0, 180, 216, 0.2);    transform: translateY(-2px);  }  .experience-achievements {    margin-top: 20px;    position: relative;    z-index: 2;  }  .achievements-title {    font-size: 1rem;    font-weight: 600;    color: #0077b6;    margin-bottom: 10px;    display: flex;    align-items: center;    gap: 8px;  }  .achievement-list {    list-style: none;    padding: 0;    margin: 0;  }  .achievement-item {    padding: 6px 0;    color: #555;    position: relative;    padding-left: 20px;    line-height: 1.5;  }  .achievement-item::before {    content: '▶';    position: absolute;    left: 0;    color: #00b4d8;    font-size: 0.8rem;  }  .experience-icon {    position: absolute;    top: 20px;    right: 20px;    width: 50px;    height: 50px;    background: linear-gradient(135deg, #0077b6, #00b4d8);    border-radius: 50%;    display: flex;    align-items: center;    justify-content: center;    box-shadow: 0 4px 15px rgba(0, 119, 182, 0.3);    transition: all 0.3s ease;    z-index: 3;  }  .experience-card:hover .experience-icon {    transform: rotate(360deg) scale(1.1);  }  .experience-icon i {    color: white;    font-size: 1.2rem;  }  /* ========= FLOATING EXPERIENCE ICONS ========= */  .floating-experience {    position: absolute;    top: 0;    left: 0;    width: 100%;    height: 100%;    pointer-events: none;    overflow: hidden;  }  .floating-exp-icon {    position: absolute;    width: 45px;    height: 45px;    background: rgba(0, 119, 182, 0.1);    border-radius: 50%;    display: flex;    align-items: center;    justify-content: center;    animation: floatExp 12s ease-in-out infinite;  }  .floating-exp-icon:nth-child(1) {    top: 25%;    left: 5%;    animation-delay: 0s;  }  .floating-exp-icon:nth-child(2) {    top: 50%;    right: 8%;    animation-delay: 4s;  }  .floating-exp-icon:nth-child(3) {    bottom: 25%;    left: 12%;    animation-delay: 8s;  }  @keyframes floatExp {    0%, 100% {      transform: translateY(0) rotate(0deg);      opacity: 0.3;    }    25% {      transform: translateY(-25px) rotate(90deg);      opacity: 0.6;    }    50% {      transform: translateY(-35px) rotate(180deg);      opacity: 0.3;    }    75% {      transform: translateY(-25px) rotate(270deg);      opacity: 0.6;    }  }  /* ========= RESPONSIVE DESIGN ========= */  @media (max-width: 768px) {    .experience-title {      font-size: 2.5rem;    }    .experience-grid {      grid-template-columns: 1fr;      gap: 20px;    }    .experience-card {      padding: 25px;    }    .experience-header {      flex-direction: column;      gap: 15px;    }    .experience-duration {      align-self: flex-start;    }    .experience-icon {      position: relative;      top: auto;      right: auto;      margin: 15px 0;      align-self: center;    }  }</style>@endpush<div class="experience-wrapper">  <!-- Floating Experience Icons -->  <div class="floating-experience">    <div class="floating-exp-icon"><i class="fas fa-briefcase"></i></div>    <div class="floating-exp-icon"><i class="fas fa-laptop-code"></i></div>    <div class="floating-exp-icon"><i class="fas fa-chart-line"></i></div>  </div>  <div class="fade-in-up">    <h1 class="experience-title">Experience</h1>    <p class="experience-subtitle">Professional journey showcasing my growth and contributions in software development</p>  </div>  <div class="experience-grid">    @forelse($experiences as $index => $exp)    <div class="experience-card fade-in-up stagger-{{ ($index % 6) + 1 }} hover-lift">      <div class="experience-icon">        <i class="fas fa-briefcase"></i>      </div>            <div class="experience-header">        <div class="experience-info">          <h3 class="experience-position">{{ $exp->position }}</h3>          <h4 class="experience-company">{{ $exp->company }}</h4>          @if($exp->location)          <p class="experience-location">            <i class="fas fa-map-marker-alt" style="margin-right: 5px; color: #00b4d8;"></i>            {{ $exp->location }}          </p>          @endif        </div>        <div class="experience-duration">          {{ $exp->start_date ? \Carbon\Carbon::parse($exp->start_date)->format('M Y') : 'Start' }} -           {{ $exp->end_date ? \Carbon\Carbon::parse($exp->end_date)->format('M Y') : 'Present' }}        </div>      </div>            @if($exp->description)      <p class="experience-description">{{ $exp->description }}</p>      @endif      @if($exp->technologies && count($exp->technologies) > 0)      <div class="experience-technologies">        <div class="technologies-title">          <i class="fas fa-code"></i>          Technologies Used        </div>        <div class="technology-tags">          @foreach($exp->technologies as $tech)          <span class="technology-tag">{{ $tech }}</span>          @endforeach        </div>      </div>      @endif      @if($exp->achievements && count($exp->achievements) > 0)      <div class="experience-achievements">        <div class="achievements-title">          <i class="fas fa-trophy"></i>          Key Achievements        </div>        <ul class="achievement-list">          @foreach($exp->achievements as $achievement)          <li class="achievement-item">{{ $achievement }}</li>          @endforeach        </ul>      </div>      @endif    </div>    @empty    <div class="experience-card fade-in-up">      <div class="experience-icon">        <i class="fas fa-briefcase"></i>      </div>      <h3 class="experience-position">No Experience Records</h3>      <p class="experience-description">Work experience information will be displayed here once added through the admin panel.</p>    </div>    @endforelse  </div></div>@endsection
+@extends('layouts.app')
+
+@section('content')
+@push('styles')
+<style>
+  /* ========= EXPERIENCE PAGE STYLES ========= */
+  .experience-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px 20px;
+  }
+
+  .experience-title {
+    text-align: center;
+    font-size: 3rem;
+    font-weight: 700;
+    color: #0077b6;
+    margin-bottom: 20px;
+    position: relative;
+    display: inline-block;
+  }
+
+  .experience-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 4px;
+    background: linear-gradient(90deg, #0077b6, #00b4d8);
+    border-radius: 2px;
+  }
+
+  .experience-subtitle {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #666;
+    margin-bottom: 60px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .experience-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+  }
+
+  .experience-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 8px 32px rgba(0, 119, 182, 0.1);
+    border: 1px solid rgba(0, 119, 182, 0.1);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .experience-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 119, 182, 0.05), transparent);
+    transition: left 0.6s ease;
+  }
+
+  .experience-card:hover::before {
+    left: 100%;
+  }
+
+  .experience-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 119, 182, 0.2);
+    border-color: rgba(0, 119, 182, 0.3);
+  }
+
+  .experience-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .experience-info {
+    flex-grow: 1;
+  }
+
+  .experience-position {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #0077b6;
+    margin-bottom: 5px;
+    line-height: 1.3;
+  }
+
+  .experience-company {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+  }
+
+  .experience-location {
+    color: #666;
+    font-size: 0.95rem;
+    margin-bottom: 10px;
+  }
+
+  .experience-duration {
+    display: inline-block;
+    background: linear-gradient(135deg, #0077b6, #00b4d8);
+    color: white;
+    padding: 6px 15px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+
+  .experience-description {
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .experience-technologies {
+    margin-top: 20px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .technologies-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #0077b6;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .technology-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .technology-tag {
+    background: rgba(0, 180, 216, 0.1);
+    color: #0077b6;
+    padding: 4px 12px;
+    border-radius: 15px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    border: 1px solid rgba(0, 180, 216, 0.2);
+    transition: all 0.3s ease;
+  }
+
+  .technology-tag:hover {
+    background: rgba(0, 180, 216, 0.2);
+    transform: translateY(-2px);
+  }
+
+  .experience-achievements {
+    margin-top: 20px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .achievements-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #0077b6;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .achievement-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .achievement-item {
+    padding: 6px 0;
+    color: #555;
+    position: relative;
+    padding-left: 20px;
+    line-height: 1.5;
+  }
+
+  .achievement-item::before {
+    content: '▶';
+    position: absolute;
+    left: 0;
+    color: #00b4d8;
+    font-size: 0.8rem;
+  }
+
+  .experience-icon {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #0077b6, #00b4d8);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(0, 119, 182, 0.3);
+    transition: all 0.3s ease;
+    z-index: 3;
+  }
+
+  .experience-card:hover .experience-icon {
+    transform: rotate(360deg) scale(1.1);
+  }
+
+  .experience-icon i {
+    color: white;
+    font-size: 1.2rem;
+  }
+
+  /* ========= FLOATING EXPERIENCE ICONS ========= */
+  .floating-experience {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .floating-exp-icon {
+    position: absolute;
+    width: 45px;
+    height: 45px;
+    background: rgba(0, 119, 182, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: floatExp 12s ease-in-out infinite;
+  }
+
+  .floating-exp-icon:nth-child(1) {
+    top: 25%;
+    left: 5%;
+    animation-delay: 0s;
+  }
+
+  .floating-exp-icon:nth-child(2) {
+    top: 50%;
+    right: 8%;
+    animation-delay: 4s;
+  }
+
+  .floating-exp-icon:nth-child(3) {
+    bottom: 25%;
+    left: 12%;
+    animation-delay: 8s;
+  }
+
+  @keyframes floatExp {
+    0%, 100% {
+      transform: translateY(0) rotate(0deg);
+      opacity: 0.3;
+    }
+    25% {
+      transform: translateY(-25px) rotate(90deg);
+      opacity: 0.6;
+    }
+    50% {
+      transform: translateY(-35px) rotate(180deg);
+      opacity: 0.3;
+    }
+    75% {
+      transform: translateY(-25px) rotate(270deg);
+      opacity: 0.6;
+    }
+  }
+
+  /* ========= RESPONSIVE DESIGN ========= */
+  @media (max-width: 768px) {
+    .experience-title {
+      font-size: 2.5rem;
+    }
+    .experience-grid {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+    .experience-card {
+      padding: 25px;
+    }
+    .experience-header {
+      flex-direction: column;
+      gap: 15px;
+    }
+    .experience-duration {
+      align-self: flex-start;
+    }
+    .experience-icon {
+      position: relative;
+      top: auto;
+      right: auto;
+      margin: 15px 0;
+      align-self: center;
+    }
+  }
+</style>
+@endpush
+
+<div class="experience-wrapper">
+  <!-- Floating Experience Icons -->
+  <div class="floating-experience">
+    <div class="floating-exp-icon"><i class="fas fa-briefcase"></i></div>
+    <div class="floating-exp-icon"><i class="fas fa-laptop-code"></i></div>
+    <div class="floating-exp-icon"><i class="fas fa-chart-line"></i></div>
+  </div>
+
+  <div class="fade-in-up">
+    <h1 class="experience-title">Experience</h1>
+    <p class="experience-subtitle">
+      Professional journey showcasing my growth and contributions in software development
+    </p>
+  </div>
+
+  <div class="experience-grid">
+    @forelse($experiences as $index => $exp)
+      <div class="experience-card fade-in-up stagger-{{ ($index % 6) + 1 }} hover-lift">
+        <div class="experience-icon">
+          <i class="fas fa-briefcase"></i>
+        </div>
+
+        <div class="experience-header">
+          <div class="experience-info">
+            <h3 class="experience-position">{{ $exp->position }}</h3>
+            <h4 class="experience-company">{{ $exp->company }}</h4>
+            @if($exp->location)
+              <p class="experience-location">
+                <i class="fas fa-map-marker-alt" style="margin-right: 5px; color: #00b4d8;"></i>
+                {{ $exp->location }}
+              </p>
+            @endif
+          </div>
+          <div class="experience-duration">
+            {{ $exp->start_date ? \Carbon\Carbon::parse($exp->start_date)->format('M Y') : 'Start' }} -
+            {{ $exp->end_date ? \Carbon\Carbon::parse($exp->end_date)->format('M Y') : 'Present' }}
+          </div>
+        </div>
+
+        @if($exp->description)
+          <p class="experience-description">{{ $exp->description }}</p>
+        @endif
+
+        @if($exp->technologies && count($exp->technologies) > 0)
+          <div class="experience-technologies">
+            <div class="technologies-title">
+              <i class="fas fa-code"></i>
+              Technologies Used
+            </div>
+            <div class="technology-tags">
+              @foreach($exp->technologies as $tech)
+                <span class="technology-tag">{{ $tech }}</span>
+              @endforeach
+            </div>
+          </div>
+        @endif
+
+        @if($exp->achievements && count($exp->achievements) > 0)
+          <div class="experience-achievements">
+            <div class="achievements-title">
+              <i class="fas fa-trophy"></i>
+              Key Achievements
+            </div>
+            <ul class="achievement-list">
+              @foreach($exp->achievements as $achievement)
+                <li class="achievement-item">{{ $achievement }}</li>
+              @endforeach
+            </ul>
+          </div>
+        @endif
+      </div>
+    @empty
+      <div class="experience-card fade-in-up">
+        <div class="experience-icon">
+          <i class="fas fa-briefcase"></i>
+        </div>
+        <h3 class="experience-position">No Experience Records</h3>
+        <p class="experience-description">
+          Work experience information will be displayed here once added through the admin panel.
+        </p>
+      </div>
+    @endforelse
+  </div>
+</div>
+@endsection
