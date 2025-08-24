@@ -20,7 +20,9 @@ class PortfolioController extends Controller
     public function about()
     {
         $userInfo = UserInfo::first();
-        return view('about', compact('userInfo'));
+        $skillsCount = Skill::active()->count();
+        $projectsCount = Project::active()->count();
+        return view('about', compact('userInfo', 'skillsCount', 'projectsCount'));
     }
 
     public function skills()
@@ -31,8 +33,8 @@ class PortfolioController extends Controller
 
     public function education()
     {
-        $education = Education::active()->ordered()->get();
-        return view('education', compact('education'));
+        $educations = Education::active()->ordered()->get();
+        return view('education', compact('educations'));
     }
 
     public function experience()
